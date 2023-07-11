@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const userRouter = require('./users');
-const filmRouter = require('./films');
+const movieRouter = require('./movies');
 const { auth } = require('../middlewares/auth');
 const NotFound = require('../utils/errorClasses/ErrorNotFound');
 
@@ -20,7 +20,7 @@ router.post('/signin', signinValidation, login); // # проверяет пер�
 router.use(auth);
 
 router.use('/users', userRouter);
-router.use('/films', filmRouter);
+router.use('/movies', movieRouter);
 
 router.use('*', () => {
   throw new NotFound('Запрашиваемый ресурс не найден');

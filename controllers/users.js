@@ -14,6 +14,14 @@ const {
   CREATED,
 } = require('../utils/responses');
 
+const {
+  NOT_VALID_DATA,
+  CANNOT_CREATE_USER,
+  EMAIL_CONFLICT,
+  WRONG_USER_DATA,
+  USER_ID_NOT_FOUND,
+} = require('../utils/errors');
+
 const createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -25,7 +33,7 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => {
       if (!user) {
-        return next(new NotFound('Не удается создать пользователя'));
+        return next(new NotFound(CANNOT_CREATE_USER));
       }
 
       return res.status(CREATED).send(
@@ -39,11 +47,11 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Введены некорректные данные'));
+        next(new BadRequest(NOT_VALID_DATA));
         return;
       }
       if (err.code === 11000) {
-        next(new Conflict('Пользователь с введенным email уже зарегистрирован'));
+        next(new Conflict(EMAIL_CONFLICT));
         return;
       }
       next(err);
@@ -56,14 +64,14 @@ const login = async (req, res, next) => {
   userModel.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        next(new Unauthorized('Почта или пароль неверны'));
+        next(new Unauthorized(WRONG_USER_DATA));
         return;
       }
       /* eslint consistent-return: off */
       return bcrypt.compare(password, user.password)
         .then((match) => {
           if (!match) {
-            throw new Unauthorized('Почта или пароль неверны');
+            throw new Unauthorized(WRONG_USER_DATA);
           } else {
             const token = jwt.sign(
               { _id: user._id },
@@ -82,7 +90,7 @@ const getCurrentUser = (req, res, next) => {
     .findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFound('Пользователь по указанному id не найден');
+        throw new NotFound(USER_ID_NOT_FOUND);
       }
       res.status(OK).send({
         name: user.name,
@@ -103,7 +111,7 @@ const updateUser = (req, res, next) => {
     )
     .then((user) => {
       if (!user) {
-        next(new NotFound('Пользователь по указанному id не найден'));
+        next(new NotFound(USER_ID_NOT_FOUND));
         return;
       }
       res.status(OK).send({
@@ -113,7 +121,7 @@ const updateUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequest('Введены некорректные данные'));
+        next(new BadRequest(NOT_VALID_DATA));
         return;
       }
       next(err);

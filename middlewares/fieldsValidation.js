@@ -30,7 +30,7 @@ const findUserByIdValidation = celebrate({
   }),
 });
 
-const createFilmValidation = celebrate({
+const createMovieValidation = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -40,15 +40,15 @@ const createFilmValidation = celebrate({
     image: Joi.string().required().regex(linkRegExp),
     trailerLink: Joi.string().required().regex(linkRegExp),
     thumbnail: Joi.string().required().regex(linkRegExp),
-    filmId: Joi.number().required(),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),
 });
 
-const deleteFilmValidation = celebrate({
+const deleteMovieValidation = celebrate({
   params: Joi.object().keys({
-    filmId: Joi.string().hex().length(24),
+    movieId: Joi.string().hex().length(24),
   }),
 });
 
@@ -57,6 +57,6 @@ module.exports = {
   signupValidation,
   updateUserValidation,
   findUserByIdValidation,
-  createFilmValidation,
-  deleteFilmValidation,
+  createMovieValidation,
+  deleteMovieValidation,
 };
