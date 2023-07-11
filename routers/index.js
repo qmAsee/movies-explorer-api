@@ -15,7 +15,7 @@ const {
 } = require('../middlewares/fieldsValidation');
 
 router.post('/signup', signupValidation, createUser); // создаёт пользователя с переданными в теле email, password и name
-router.post('/signin', signinValidation, login); // # проверяет переданные в теле почту и пароль и возвращает JWT
+router.post('/signin', signinValidation, login); // проверяет переданные в теле почту и пароль и возвращает JWT
 
 router.use(auth);
 

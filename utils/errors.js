@@ -4,6 +4,7 @@ const CANNOT_CREATE_USER = 'Не удалось создать пользова�
 const EMAIL_CONFLICT = 'Пользователь с введенным email уже зарегистрирован';
 const WRONG_USER_DATA = 'Почта или пароль неверны';
 const USER_ID_NOT_FOUND = 'Пользователь по указанному id не найден';
+const AUTH_REQUIRED = 'Для доступа требуется авторизация';
 
 const MOVIE_ID_NOT_FOUND = 'Фильм с укказанным id не найден';
 const MOVIE_DELETE_FORBIDDEN = 'Вы не можете удалять фильмы других пользователей';
@@ -18,4 +19,5 @@ module.exports = {
   MOVIE_ID_NOT_FOUND,
   MOVIE_DELETE_FORBIDDEN,
   WRONG_MOVIE_DATA,
+  AUTH_REQUIRED,
 };
